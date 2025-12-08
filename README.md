@@ -22,7 +22,7 @@ An AI-powered web application capable of classifying tea leaf diseases from imag
 ## 📂 Project Structure
 
 ```text
-/project-root
+/teai
 ├── backend/
 │   └── db.php              # Database connection configuration
 ├── model/
