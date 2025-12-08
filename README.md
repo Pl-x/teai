@@ -15,7 +15,7 @@ An AI-powered web application capable of classifying tea leaf diseases from imag
 
 * **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 * **Backend:** PHP (Session management, File handling, Database interactions)
-* **Database:** PostgreSQL / MySQL (via PDO)
+* **Database:** PostgreSQL (via PDO)
 * **AI Engine:** Python 3, TensorFlow (Keras), NumPy
 * **Visualization:** Matplotlib
 
@@ -43,7 +43,11 @@ An AI-powered web application capable of classifying tea leaf diseases from imag
 
 * Web Server (Apache/Nginx) with PHP 7.4 or higher
 * Python 3.8 - 3.11 (Ensure it is added to system PATH)
-* Database (PostgreSQL or MySQL)
+* Database (PostgreSQL)
+
+* The database i am using is Postgresql since it scales well and it's easy to setup in docker  so the php PDO is specific to Postgres.
+* If your want to use another DB make sure to check your DB documentation and PHP's for integration.
+* The tech stack is vanilla to minimize frameworks overkill and setup but it might shift to laravel and Flask in future.
 
 ### 2. Python Dependencies
 
@@ -93,23 +97,17 @@ chmod +x model/predict_cli.py
 
 ## 🔧 Troubleshooting
 
-### 1. "Prediction failed. Output was: ..."
-
-* Check `log/prediction_log.txt` for details
-* Ensure the path to python in `predict.php` (`/usr/bin/env python3`) matches your system's python path
-* Ensure `tea-model.hdf5` is present in the `model/` directory
-
-### 2. Image upload fails
+### 1. Image upload fails
 
 * Check directory permissions for `uploads/`
 * Check PHP `upload_max_filesize` in `php.ini`
 
-### 3. Visualization graph not showing
+### 2. Visualization graph not showing
 
 * Ensure matplotlib is installed
 * Check if the PHP script has write permissions to create the `_vis.png` file in the `uploads/` folder
 
-### 4. The Model
+### 3. The Model
 
 * The model is an Image Classification CNN(Convolutionary Neural Network) from a third party developer.
 * It takes input images of 180 * 180 px with 3 RGB color channels.
