@@ -1,3 +1,5 @@
+# 😂🫰☪️ ==== We honestly feel good about ourselves...shit ain't easy ==== 😂🫰☪️
+
 # 🍃 Tea Leaf Disease Detection System
 
 An AI-powered web application capable of classifying tea leaf diseases from images. This system uses a Deep Learning model (TensorFlow/Keras) integrated with a PHP web interface to provide real-time diagnosis, confidence scores, visual analysis, and treatment recommendations.

@@ -1,6 +1,8 @@
 """
 Complete Tea Leaf Disease Classification System
 All-V2 based model for detecting 8 tea leaf conditions
+
+Word: If you ever fall in love with tech fall in love with python if you're soft...php is for enthusiasts...it makes you feel like shit😂😂
 """
 
 import os
