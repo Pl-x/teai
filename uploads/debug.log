@@ -1,0 +1,16 @@
+File upload status: Success
+Command executed: /usr/bin/env python3 '/mnt/sub0_2/tese/model/predict_cli.py' '/mnt/sub0_2/tese/uploads/1765210246_dc4aafa26ec1.png' 2>&1
+Prediction output:   File "/mnt/sub0_2/tese/model/predict_cli.py", line 53
+    img = load_img(image_path, target_size=target_size)
+IndentationError: unexpected indent
+Error during prediction:   File "/mnt/sub0_2/tese/model/predict_cli.py", line 53
+    img = load_img(image_path, target_size=target_size)
+IndentationError: unexpected indent
+File upload status: Success
+Command executed: /usr/bin/env python3 '/mnt/sub0_2/tese/model/predict_cli.py' '/mnt/sub0_2/tese/uploads/1765210534_72637d7a6076.png' 2>&1
+Prediction output: /home/sub_0/anaconda3/lib/python3.13/site-packages/keras/src/layers/preprocessing/data_layer.py:95: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+{"disease": "Algal leaf", "confidence": 0.9881969094276428, "probabilities": {"Anthracnose": 0.0013799549778923392, "Algal leaf": 0.9881969094276428, "Bird eye spot": 5.453145149658667e-06, "Brown blight": 0.004492028616368771, "Gray light": 2.615126686578151e-05, "Healthy": 2.510412741685286e-06, "Red leaf spot": 0.00566312950104475, "White spot": 0.00023380927450489253}, "is_healthy": false, "info": {"description": "Algal infection creating greenish-gray patches", "severity": "Medium", "treatment": "Improve air circulation, copper-based treatment"}}
+File upload status: Success
+Command executed: /usr/bin/env python3 '/mnt/sub0_2/tese/model/predict_cli.py' '/mnt/sub0_2/tese/uploads/1765211450_f4d22b5d2a85.png' 2>&1
+Raw Output: {"disease": "White spot", "confidence": 0.8644594550132751, "probabilities": {"Anthracnose": 1.569574351378833e-06, "Algal leaf": 0.00016158269136212766, "Bird eye spot": 3.8627376297561966e-10, "Brown blight": 0.13486796617507935, "Gray light": 2.230045925699642e-09, "Healthy": 1.147440684690082e-06, "Red leaf spot": 0.0005082827992737293, "White spot": 0.8644594550132751}, "is_healthy": false, "info": {"description": "White or light-colored spots on leaf surface", "severity": "Low to Medium", "treatment": "Monitor closely, apply fungicide if spreading"}}
