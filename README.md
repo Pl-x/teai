@@ -66,14 +66,14 @@ uv sync
 The project uses composer to sync and manage php dependencies:
 Install composer if not present
 
-'''bash
+```bash
 composer install
 
 sleep 5
 
 cd backend
 composer require vlucas/phpdotenv
-'''
+```
 
 
 ### 3. Database Configuration
