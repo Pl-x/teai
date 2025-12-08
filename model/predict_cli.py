@@ -10,7 +10,7 @@ import warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-# 2. Suppress Python Warnings (Fixes the specific UserWarning you are seeing)
+
 warnings.filterwarnings("ignore")
 
 # Add current directory to path to ensure we can import 'predict.py'

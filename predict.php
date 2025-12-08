@@ -54,7 +54,7 @@ if (!$saved) {
 // ===============================================
 // 1. Python Execution Logic (Restored)
 // ===============================================
-$python = '/usr/bin/env python3'; // Ensure this path is correct for your server
+$python = '/usr/bin/env python3'; // Ensure this path is correct for your server environment... it is fine with linux
 $cli = __DIR__ . '/model/predict_cli.py';
 $cmd = escapeshellcmd($python) . ' ' . escapeshellarg($cli) . ' ' . escapeshellarg($targetPath) . ' 2>&1';
 
@@ -133,9 +133,9 @@ try {
 $_SESSION['analysis'] = [
     'id' => $inserted_id,
     'disease' => $disease,
-    'confidence' => round($confidence * 100, 2), // percent
+    'confidence' => round($confidence * 100, 2), 
     'solution' => $solution,
-    'visualization_path' => $visualization_path // NEW: Pass visualization path
+    'visualization_path' => $visualization_path 
 ];
 
 header('Location: dashboard.php');

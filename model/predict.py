@@ -8,7 +8,7 @@ import sys
 import numpy as np
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model
-import matplotlib.pyplot as plt # ADDED: Import for visualization
+import matplotlib.pyplot as plt 
 
 # Disease classifications
 DISEASE_CLASSES = [
@@ -290,35 +290,16 @@ def get_disease_info(disease_name):
 # EXAMPLE USAGE
 # ============================================
 if __name__ == "__main__":
-    
-    # Example 1: Simple prediction
-    print("Example 1: Basic Prediction")
-    print("-" * 40)
-    # Note: Requires a real image path to run
-    # disease = predict_disease('path/to/tea_leaf.jpg') 
-    
-    # Example 2: Detailed prediction
-    print("\nExample 2: Detailed Prediction")
-    print("-" * 40)
-    # result = predict_with_confidence('path/to/tea_leaf.jpg')
-    # print(f"Disease: {result['disease']}")
-    # print(f"Confidence: {result['confidence']:.2%}")
-    # print(f"Healthy: {result['is_healthy']}")
-    
-    # Example 3: Visualize (UNCOMMENTED FOR FULL FUNCTIONALITY)
-    print("\nExample 3: Visualization")
-    print("-" * 40)
-    # visualize_prediction('path/to/tea_leaf.jpg', result, 'output_vis.png')
-    
-    # Example 4: Analyze folder
-    print("\nExample 4: Folder Analysis")
-    print("-" * 40)
-    # analysis = analyze_folder('/mnt/sub0_2/tese/uploads/')
-    
-    # Example 5: Get disease info
-    print("\nExample 5: Disease Information")
-    print("-" * 40)
-    info = get_disease_info('Anthracnose')
-    print(f"Description: {info['description']}")
-    print(f"Severity: {info['severity']}")
-    print(f"Treatment: {info['treatment']}")
+    # Example usage
+    test_image_path = os.path.join(MODEL_DIR, 'test_leaf.jpg')
+    try:
+        prediction = predict_with_confidence(test_image_path)
+        print("Prediction Result:", prediction)
+        
+        # Visualize
+        vis_path = os.path.join(MODEL_DIR, 'test_leaf_vis.png')
+        visualize_prediction(test_image_path, prediction, save_path=vis_path)
+        print(f"Visualization saved to: {vis_path}")
+        
+    except Exception as e:
+        print(f"Error during prediction or visualization: {e}")

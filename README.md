@@ -51,11 +51,30 @@ An AI-powered web application capable of classifying tea leaf diseases from imag
 
 ### 2. Python Dependencies
 
-Install the required Python libraries using pip:
+Install the required Python libraries using uv:
+We choose uv because it makes managemnt easy eliminating the need for multiple untracked environments that may become cumbersome as the codebase scales.
+Check Out uv's official documentation at ''' url https://docs.astral.sh/uv '''.
+Think of it as npm...package manager for python. Sync the pyproject.toml file to install the dependencies.
 
 ```bash
-pip install tensorflow numpy matplotlib
+cd model
+uv sync
 ```
+
+### 3. PHP Dependencies
+
+The project uses composer to sync and manage php dependencies:
+Install composer if not present
+
+'''bash
+composer install
+
+sleep 5
+
+cd backend
+composer require vlucas/phpdotenv
+'''
+
 
 ### 3. Database Configuration
 
