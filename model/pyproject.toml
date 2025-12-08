@@ -1,0 +1,15 @@
+[project]
+requires-python = ">=3.10"
+name = "Tea-AI-Model"
+version = "0.1.0"
+description = "A module for tea leaf disease prediction using trained models."
+authors = [
+    { name="7ycrx", email="allan@allan7ycrx.org" }    
+]
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.18.0",
+    "matplotlib>=3.2.0",
+    "tensorflow>=2.0.0",
+    "Pillow>=8.0.0"
+]
