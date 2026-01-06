@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  database-prod:
+    image: postgres:15-alpine
+    container_name: tea_psql
+    restart: always
+    environment:
+      POSTGRES_USER: tea_farmer
+      POSTGRES_PASSWORD: tea_farmer
+      POSTGRES_DB: tea_ai
+    volumes:
+      - psql_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5437:5432"
+    networks:
+      - tea_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tea_farmer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  client:
+    image: 7ycrx/teai:latest
+    container_name: tea_client
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - tea_network
+    environment:
+      - POSTGRES_HOST=database-prod
+      - POSTGRES_PASSWORD=tea_farmer
+      - POSTGRES_DB=tea_ai
+      - POSTGRES_USER=tea_farmer
+      - POSTGRES_PORT=5432
+      - MPLBACKEND=Agg
+    volumes:
+      - uploads_data:/var/www/html/uploads
+      - logs_data:/var/www/html/log
+    depends_on:
+      - database-prod
+
+networks:
+  tea_network:
+    driver: bridge
+
+volumes:
+  psql_data:
+    driver: local
+  uploads_data:
+    driver: local
+  logs_data:
+    driver: local

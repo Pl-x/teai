@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = (int)$_SESSION['user_id'];
-$logFile = __DIR__ . '/log/prediction_log.txt'; // Define log file path
+$logFile = __DIR__ . '/log/prediction_log.txt';
 
 $uploadDir = __DIR__ . '/uploads';
 if (!is_dir($uploadDir)) {
@@ -50,36 +50,60 @@ if (!$saved) {
     exit;
 }
 
-
 // ===============================================
-// 1. Python Execution Logic (Restored)
+// Python Execution Logic
 // ===============================================
-$python = '/usr/bin/env python3'; // Ensure this path is correct for your server environment... it is fine with linux
+$python = __DIR__ . '/model/.venv/bin/python3';
 $cli = __DIR__ . '/model/predict_cli.py';
 $cmd = escapeshellcmd($python) . ' ' . escapeshellarg($cli) . ' ' . escapeshellarg($targetPath) . ' 2>&1';
 
 exec($cmd, $outLines, $ret);
 
-// Log raw output for debugging
+// Log everything
 $rawOutput = implode("\n", $outLines);
-file_put_contents($logFile, "Command executed: $cmd\n", FILE_APPEND);
-file_put_contents($logFile, "Raw Output: $rawOutput\n", FILE_APPEND);
+file_put_contents($logFile, "=== NEW PREDICTION ===\n", FILE_APPEND);
+file_put_contents($logFile, "Time: " . date('Y-m-d H:i:s') . "\n", FILE_APPEND);
+file_put_contents($logFile, "Command: $cmd\n", FILE_APPEND);
+file_put_contents($logFile, "Exit code: $ret\n", FILE_APPEND);
+file_put_contents($logFile, "Raw Output:\n$rawOutput\n", FILE_APPEND);
 
-// FIX: Loop through output lines to find the valid JSON line
+// Check exit code
+if ($ret !== 0) {
+    $_SESSION['analysis_error'] = "Python script failed (exit code: $ret). Check logs.";
+    file_put_contents($logFile, "ERROR: Non-zero exit code\n\n", FILE_APPEND);
+    header('Location: dashboard.php');
+    exit;
+}
+
+// Find valid JSON line, skipping warnings
 $result = null;
 foreach ($outLines as $line) {
-    $decoded = json_decode($line, true);
+    // Skip known warning patterns
+    if (strpos($line, 'QFont::') !== false ||
+        strpos($line, 'QXcb') !== false ||
+        empty(trim($line))) {
+        continue;
+        }
+
+        $decoded = json_decode($line, true);
     if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
         $result = $decoded;
-        break; 
+        file_put_contents($logFile, "Valid JSON found: $line\n\n", FILE_APPEND);
+        break;
     }
 }
-// ===============================================
-
 
 if ($result === null) {
-    $_SESSION['analysis_error'] = "Prediction failed. Output was: " . $rawOutput;
-    file_put_contents($logFile, "Error: No valid JSON found in output.\n", FILE_APPEND);
+    $_SESSION['analysis_error'] = "No valid prediction output. Check logs.";
+    file_put_contents($logFile, "ERROR: No valid JSON in output\n\n", FILE_APPEND);
+    header('Location: dashboard.php');
+    exit;
+}
+
+// Check for errors in result
+if (isset($result['error'])) {
+    $_SESSION['analysis_error'] = "Prediction error: " . $result['error'];
+    file_put_contents($logFile, "ERROR from Python: " . $result['error'] . "\n\n", FILE_APPEND);
     header('Location: dashboard.php');
     exit;
 }
@@ -90,8 +114,7 @@ $confidence = isset($result['confidence']) ? (float)$result['confidence'] : 0.0;
 $probabilities = isset($result['probabilities']) ? json_encode($result['probabilities']) : json_encode([]);
 $info = $result['info'] ?? [];
 $solution = $info['treatment'] ?? ($result['solution'] ?? 'No solution available');
-// NEW: Extract visualization path
-$visualization_path = $result['visualization_path'] ?? null; 
+$visualization_path = $result['visualization_path'] ?? null;
 
 try {
     // Attempt to insert with the new 'visualization_path' column
@@ -103,7 +126,7 @@ try {
         ':conf' => $confidence,
         ':probs' => $probabilities,
         ':sol' => $solution,
-        ':vis_path' => $visualization_path // NEW: Insert visualization path
+        ':vis_path' => $visualization_path
     ]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $inserted_id = $row['id'] ?? null;
@@ -132,12 +155,11 @@ try {
 // Put a summary into session for dashboard display
 $_SESSION['analysis'] = [
     'id' => $inserted_id,
-    'disease' => $disease,
-    'confidence' => round($confidence * 100, 2), 
-    'solution' => $solution,
-    'visualization_path' => $visualization_path 
+'disease' => $disease,
+'confidence' => round($confidence * 100, 2),
+'solution' => $solution,
+'visualization_path' => $visualization_path
 ];
 
 header('Location: dashboard.php');
 exit;
-?>

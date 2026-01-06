@@ -7,6 +7,12 @@ Word: If you ever fall in love with tech fall in love with python if you're soft
 
 import os
 import sys
+import matplotlib
+
+matplotlib.use('Agg')  # Non-interactive backend for Docker
+os.environ['MPLBACKEND'] = 'Agg'
+os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
+
 import numpy as np
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model

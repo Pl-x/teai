@@ -10,8 +10,12 @@ import warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
+os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
+os.environ['MPLBACKEND'] = 'Agg'
+
 
 warnings.filterwarnings("ignore")
+sys.stderr = open(os.devnull, 'w')
 
 # Add current directory to path to ensure we can import 'predict.py'
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

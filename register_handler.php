@@ -5,13 +5,13 @@ require_once 'backend/db.php'; // Make sure this connects properly to your DB
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // CSRF token check
-    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+    if (empty($_POST['token']) || empty($_SESSION['token']) || !hash_equals($_SESSION['token'], $_POST['token'])) {
         die("Invalid CSRF token");
     }
 
     // Collect and sanitize input
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $country = trim($_POST['country']);

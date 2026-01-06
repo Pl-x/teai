@@ -1,4 +1,3 @@
-<!-- register.php -->
 <?php
 session_start();
 ?>
@@ -123,7 +122,9 @@ session_start();
 
     <form method="post" action="register_handler.php">
         <?php
-            $_SESSION['token'] = bin2hex(random_bytes(32));
+            if (empty($_SESSION['token'])) {
+                $_SESSION['token'] = bin2hex(random_bytes(32));
+            }
             $selected_country = isset($_POST['country']) ? $_POST['country'] : '';
             $selected_language = isset($_POST['language']) ? $_POST['language'] : '';
         ?>
