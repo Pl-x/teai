@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - ./uploads/:/var/www/html/uploads
+    depends_on:
+      - database-prod
+    environment:
+      - POSTGRES_HOST=database-prod
+      - POSTGRES_PASSWORD=tea_farmer
+      - POSTGRES_DB=tea_ai
+      - POSTGRES_USER=tea_farmer
+      - POSTGRES_PORT=5432
+    networks:
+      - ghost
+  
+  database-prod:
+    image: postgres:15-alpine
+    ports:
+      - 5437:5432
+    environment:
+      POSTGRES_USER: tea_farmer
+      POSTGRES_PASSWORD: tea_farmer
+      POSTGRES_DB: tea_ai
+    networks:
+      - ghost
+volumes:
+  postgres_data: 
+networks:
+  ghost: 
